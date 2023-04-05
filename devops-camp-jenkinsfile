@@ -63,6 +63,9 @@ pipeline {
                         docker.withRegistry('https://$HARBOR_REGISTRY', 'dgordonsmith-harbor-auth') {
                             sh 'docker tag $DB_IMAGE_NAME-$COMMIT_HASH $HARBOR_REGISTRY/$HARBOR_PROJECT/$DB_IMAGE_NAME:$COMMIT_HASH-$PIPELINE_HASH'
                             sh 'docker push $HARBOR_REGISTRY/$HARBOR_PROJECT/$DB_IMAGE_NAME:$COMMIT_HASH-$PIPELINE_HASH'
+                        }
+                    }
+                 }
             }
             //TODO("Lab 4 - Artifact Management"): clean local docker db image
             post {
@@ -78,7 +81,7 @@ pipeline {
                     }
                 }
             }
-        }
+        }     
         //TODO("Lab 7 - Automated Security Scans"): add a stage
         stage('Deploy') {
             steps {
@@ -93,4 +96,5 @@ pipeline {
             sh 'rm -rf .git ./*'
         }
     }
+        
 }
