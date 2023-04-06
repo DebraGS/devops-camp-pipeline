@@ -20,14 +20,14 @@ pipeline {
                     script {
                         env.COMMIT_HASH = sh(script: 'git log --format=format:%h -1 --follow database/database.sql', returnStdout: true).trim()
                     }
-                    //add environment variable for python script pulled in during Lab 6
-                    withCredentials([usernamePassword(credentialsId: 'dgordonsmith-harbor-auth', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                        script {
+                 }
+                 //add environment variable for python script pulled in during Lab 6
+                withCredentials([usernamePassword(credentialsId: 'dgordonsmith-harbor-auth', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    script {
                             //BUILD_DB will be used to execute the script and return either true or false
                             env.BUILD_DB = sh(script: 'python check_harbor_db.py -h $COMMIT_HASH -i $DB_IMAGE_NAME -r $HARBOR_REGISTRY -p $HARBOR_PROJECT -c ${USERNAME}:${PASSWORD}', returnStdout: true).trim()
-                        }
                     }
-                }
+                }                
             }
         } // -----end Application repository stage
         // Our new environment variable BUILD_DB will be used in this stage.  
